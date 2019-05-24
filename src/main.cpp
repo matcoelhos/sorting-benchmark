@@ -34,6 +34,14 @@ void print_affinity() {
 int main(int argc, char *argv[]) {
 
     cpu_set_t mask;
+
+    CPU_ZERO(&mask);
+    CPU_SET(atoi(argv[5]), &mask);
+    if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+        perror("sched_setaffinity");
+        assert(false);
+    }
+
     if (argc >= 6) {
 
         bool isVerbose = getVerboseOption(argc, argv);
@@ -43,13 +51,6 @@ int main(int argc, char *argv[]) {
         char *inputFile = argv[2];
         char *outputFile = argv[3];
         std::string algorithm = toLower(argv[4]);
-
-        CPU_ZERO(&mask);
-	    CPU_SET(atoi(argv[5]), &mask);
-        if (sched_setaffinity(atoi(argv[5]), sizeof(cpu_set_t), &mask) == -1) {
-            perror("sched_setaffinity");
-            assert(false);
-        }
 
         if (algorithm == QUICK_SORT) {
             QuickSort qs(arraySize, inputFile, outputFile, isVerbose);
