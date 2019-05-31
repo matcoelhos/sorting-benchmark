@@ -33,13 +33,18 @@ void print_affinity() {
 
 int main(int argc, char *argv[]) {
 
-    cpu_set_t mask;
+    int cpu_aff = atoi(argv[5]);
 
-    CPU_ZERO(&mask);
-    CPU_SET(atoi(argv[5]), &mask);
-    if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
-        perror("sched_setaffinity");
-        assert(false);
+    if (cpu_aff >= 0)
+    {
+        cpu_set_t mask;
+
+        CPU_ZERO(&mask);
+        CPU_SET(cpu_aff, &mask);
+        if (sched_setaffinity(0, sizeof(cpu_set_t), &mask) == -1) {
+            perror("sched_setaffinity");
+            assert(false);
+        }
     }
 
     if (argc >= 6) {
