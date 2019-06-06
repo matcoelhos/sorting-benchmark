@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
     int cpu_aff = atoi(argv[5]);
 
-    if (cpu_aff >= 0)
+    if (cpu_aff != 9)
     {
         cpu_set_t mask;
 
